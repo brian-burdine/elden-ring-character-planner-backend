@@ -22,12 +22,18 @@ class Armor (models.Model):
     name = models.CharField(max_length=100)
     data = models.JSONField()
 
+    class Meta:
+        verbose_name_plural = "armor"
+
     def __str__(self):
         return self.name
 
 class Ash_Of_War (models.Model):
     name = models.CharField(max_length=75)
     data = models.JSONField()
+
+    class Meta:
+        verbose_name_plural = "ashes of war"
 
     def __str__(self):
         return self.name
