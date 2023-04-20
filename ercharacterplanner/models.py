@@ -8,8 +8,8 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
-## Data Models
-## Grabbed from ERDB API (https://api.erdb.wiki/v1/latest/)
+# DATA MODELS
+#1. Grabbed from ERDB API (https://api.erdb.wiki/v1/latest/)
 
 class Armament (models.Model):
     name = models.CharField(max_length=75)
@@ -58,6 +58,26 @@ class Talisman (models.Model):
 
     def __str__(self):
         return self.name
+
+#2. Self-defined
+
+class Main_Attribute (models.Model):
+    name = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.name
+
+class Starting_Class (models.Model):
+    name = models.CharField(max_length=20)
+    attributes = models.ManyToManyField(Main_Attribute, through='Starting_Class_Attribute')
+
+    def __str__(self):
+        return self.name
+
+class Starting_Class_Attribute (models.Model):
+    starting_class = models.ForeignKey(Starting_Class, on_delete=models.CASCADE)
+    attribute = models.ForeignKey(Main_Attribute(), on_delete=models.CASCADE)
+    base_value = models.IntegerField()
 
 # class Weapon (models.Model):
 #     name = models.CharField(max_length=75)
