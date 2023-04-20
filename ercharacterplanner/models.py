@@ -11,26 +11,68 @@ class CustomUser(AbstractUser):
 ## Data Models
 ## Grabbed from ERDB API (https://api.erdb.wiki/v1/latest/)
 
-class Weapon (models.Model):
+class Armament (models.Model):
     name = models.CharField(max_length=75)
-    category = models.ForeignKey('Weapon_Type', on_delete=models.PROTECT)
-    weight = models.DecimalField(max_digits=5, decimal_places=1)
-    default_skill_id = models.IntegerField()
-    allow_ash_of_war = models.BooleanField()
-    upgrade_material = models.ForeignKey('Upgrade_Material', on_delete=models.PROTECT)
-    attribute_requirement = models.ManyToManyField('Attribute_Requirement')
+    data = models.JSONField()
 
     def __str__(self):
         return self.name
 
-class Weapon_Type (models.Model):
-    name = models.CharField(max_length=30)
+class Armor (models.Model):
+    name = models.CharField(max_length=100)
+    data = models.JSONField()
 
     def __str__(self):
         return self.name
 
-class Upgrade_Material (models.Model):
-    name = models.CharField(max_length=30)
+class Ash_Of_War (models.Model):
+    name = models.CharField(max_length=75)
+    data = models.JSONField()
 
     def __str__(self):
         return self.name
+
+class Great_Rune (models.Model):
+    name = models.CharField(max_length=100)
+    data = models.JSONField()
+
+    def __str__(self):
+        return self.name
+
+class Spell (models.Model):
+    name = models.CharField(max_length=100)
+    data = models.JSONField()
+
+    def __str__(self):
+        return self.name
+
+class Talisman (models.Model):
+    name = models.CharField(max_length=100)
+    data = models.JSONField()
+
+    def __str__(self):
+        return self.name
+
+# class Weapon (models.Model):
+#     name = models.CharField(max_length=75)
+#     category = models.ForeignKey('Weapon_Type', on_delete=models.PROTECT)
+#     weight = models.DecimalField(max_digits=5, decimal_places=1)
+#     default_skill_id = models.IntegerField()
+#     allow_ash_of_war = models.BooleanField()
+#     upgrade_material = models.ForeignKey('Upgrade_Material', on_delete=models.PROTECT)
+#     attribute_requirement = models.ManyToManyField('Attribute_Requirement')
+
+#     def __str__(self):
+#         return self.name
+
+# class Weapon_Type (models.Model):
+#     name = models.CharField(max_length=30)
+
+#     def __str__(self):
+#         return self.name
+
+# class Upgrade_Material (models.Model):
+#     name = models.CharField(max_length=30)
+
+#     def __str__(self):
+#         return self.name
