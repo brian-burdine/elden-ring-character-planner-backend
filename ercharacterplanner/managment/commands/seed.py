@@ -17,7 +17,27 @@ from ...models import (
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
-    pass
+    #API Calls
+    seed_armaments()
+    print("Armaments table seeded")
+    # seed_armor()
+    # print("Armor table seeded")
+    # seed_ashes_of_war()
+    # print("Ashes of War table seeded")
+    # seed_great_runes()
+    # print("Great Runes table seeded")
+    # seed_spells()
+    # print("Spells table seeded")
+    # seed_talismans()
+    # print("Talismans table seeded")
+
+    #Self-defined tables
+    seed_main_attributes()
+    print("Main Attributes table seeded")
+    seed_starting_classes()
+    print("Starting Classes table seeded")
+    seed_starting_class_attributes()
+    print("Starting Class Attributes table seeded")
 
 # API URL to get data from latest game version
 BASE_URL = "https://api.erdb.wiki/v1/latest/"
@@ -153,6 +173,8 @@ def seed_starting_classes():
         sc.save()
 
 def seed_starting_class_attributes():
+    # This is a bridge table, and requires the related tables to have values
+    # It might make sense to make this into one larger function
     starting_class_attributes = {
         "Vagabond": {
             "Vigor": 15,
@@ -255,6 +277,16 @@ def seed_starting_class_attributes():
             "Arcane": 10
         }
     }
+    for attribute_set in starting_class_attributes:
+        class_id = Starting_Class.objects.get(name=attribute_set).pk
+        for attribute in attribute_set:
+            attribute_id = Main_Attribute.objects.get(name=attribute).pk
+            sca = Starting_Class_Attribute(
+                starting_class=class_id,
+                attribute=attribute_id,
+                base_value=attribute_set[attribute]
+            )
+            sca.save()
 
 # # API Test
 # great_runes = get_great_runes()
