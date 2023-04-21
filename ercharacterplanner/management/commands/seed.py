@@ -17,9 +17,10 @@ from ...models import (
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
+    pass
     #API Calls
-    seed_armaments()
-    print("Armaments table seeded")
+    # seed_armaments()
+    # print("Armaments table seeded")
     # seed_armor()
     # print("Armor table seeded")
     # seed_ashes_of_war()
@@ -32,15 +33,21 @@ class Command(BaseCommand):
     # print("Talismans table seeded")
 
     #Self-defined tables
-    seed_main_attributes()
-    print("Main Attributes table seeded")
-    seed_starting_classes()
-    print("Starting Classes table seeded")
-    seed_starting_class_attributes()
-    print("Starting Class Attributes table seeded")
+    # seed_main_attributes()
+    # print("Main Attributes table seeded")
+    # seed_starting_classes()
+    # print("Starting Classes table seeded")
+    # clear_data(Starting_Class_Attribute)
+    # print("Starting Class Attributes table cleared")
+    # seed_starting_class_attributes()
+    # print("Starting Class Attributes table seeded")
 
 # API URL to get data from latest game version
 BASE_URL = "https://api.erdb.wiki/v1/latest/"
+
+# Clear data from table
+def clear_data (model):
+    model.objects.all().delete()
 
 # Armaments
 def get_armaments():
@@ -142,6 +149,7 @@ def seed_talismans():
             name=tali,
             data=talismans[tali]
         )
+        t.save()
 
 # Personally-defined Tables
 # These are seed functions for tables that I didn't find a useful API to 
@@ -278,13 +286,14 @@ def seed_starting_class_attributes():
         }
     }
     for attribute_set in starting_class_attributes:
-        class_id = Starting_Class.objects.get(name=attribute_set).pk
-        for attribute in attribute_set:
-            attribute_id = Main_Attribute.objects.get(name=attribute).pk
+        starting_class = Starting_Class.objects.get(name=attribute_set)
+        for attribute_name in starting_class_attributes[attribute_set]:
+            # print(attribute_set + ": " + attribute)
+            attribute = Main_Attribute.objects.get(name=attribute_name)
             sca = Starting_Class_Attribute(
-                starting_class=class_id,
-                attribute=attribute_id,
-                base_value=attribute_set[attribute]
+                starting_class=starting_class,
+                attribute=attribute,
+                base_value=starting_class_attributes[attribute_set][attribute_name]
             )
             sca.save()
 
