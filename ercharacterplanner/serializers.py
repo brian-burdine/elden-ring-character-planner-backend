@@ -1,6 +1,9 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from .models import CustomUser
+from .models import (
+    CustomUser,
+    Character
+)
 
 class CustomUserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
@@ -21,3 +24,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+class CharacterSerilizer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=16)
+    owner = serializers.PrimaryKeyRelatedField()
+
+    class Meta:
+        model = Character
+        fields = ('name', 'owner')
