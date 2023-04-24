@@ -25,10 +25,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class CharacterSerilizer(serializers.ModelSerializer):
+class CharacterSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=16)
-    owner = serializers.PrimaryKeyRelatedField()
 
     class Meta:
         model = Character
-        fields = ('name', 'owner')
+        fields = ('id', 'name', 'owner')
