@@ -8,6 +8,10 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
+class Character (models.Model):
+    name = models.CharField(max_length=16)
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
 # DATA MODELS
 #1. Grabbed from ERDB API (https://api.erdb.wiki/v1/latest/)
 
