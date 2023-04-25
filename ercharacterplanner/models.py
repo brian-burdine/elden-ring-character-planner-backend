@@ -10,7 +10,7 @@ class CustomUser(AbstractUser):
 
 class Character (models.Model):
     name = models.CharField(max_length=16)
-    starting_class = models.ForeignKey("Starting_Class", on_delete=models.CASCADE, blank=False)
+    starting_class = models.ForeignKey("Starting_Class", on_delete=models.CASCADE, blank=False, default=1)
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
 # DATA MODELS

@@ -2,7 +2,10 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from .models import (
     CustomUser,
-    Character
+    Character,
+    Main_Attribute,
+    Starting_Class,
+    Starting_Class_Attribute
 )
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -30,4 +33,27 @@ class CharacterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Character
-        fields = ('id', 'name', 'owner')
+        fields = ('id', 'name', 'starting_class', 'owner')
+
+class MainAttributeSerializer(serializers.ModelSerializer):
+    name = serializers.CharField()
+
+    class Meta:
+        model = Main_Attribute
+        fields = ('id', 'name')
+
+class StartingClassAttributeSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField(source='main_attribute.id')
+    name = serializers.ReadOnlyField(source='main_attribute.name')
+
+    class Meta:
+        model = Starting_Class_Attribute
+        fields = ('id', 'name', 'base_value')
+
+class StartingClassSerializer(serializers.ModelSerializer):
+    name = serializers.CharField()
+    attributes = StartingClassAttributeSerializer(source='starting_class_attribute_set' , many=True)
+
+    class Meta:
+        model = Starting_Class
+        fields = ('id', 'name', 'attributes')

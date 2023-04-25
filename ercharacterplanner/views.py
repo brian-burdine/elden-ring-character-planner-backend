@@ -6,11 +6,13 @@ from rest_framework.views import APIView
 from rest_framework.decorators import action
 from .models import (
     CustomUser,
-    Character
+    Character,
+    Starting_Class
 )
 from .serializers import (
     CustomUserSerializer,
-    CharacterSerializer
+    CharacterSerializer,
+    StartingClassSerializer
 )
 
 # Create your views here.
@@ -48,3 +50,8 @@ class CharacterViewSet(viewsets.ModelViewSet):
     # Attaches the user to the character when the request comes through with the user that made the request
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+#STARTING CLASS
+class StartingClassViewSet(viewsets.ModelViewSet):
+    queryset = Starting_Class.objects.all()
+    serializer_class = StartingClassSerializer
