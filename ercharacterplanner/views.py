@@ -35,8 +35,8 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = CustomUserSerializer
 
 #CHARACTERS
-#TO-DO: Figure out if I need to filter queryset based on user/owner
 class CharacterViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
 
