@@ -11,7 +11,21 @@ class CustomUser(AbstractUser):
 class Character (models.Model):
     name = models.CharField(max_length=16)
     starting_class = models.ForeignKey("Starting_Class", on_delete=models.CASCADE, blank=False, default=1)
+    leveled_attributes = models.ManyToManyField("Main_Attribute", through="Character_Attribute")
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+class Character_Attribute (models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE)
+    attribute = models.ForeignKey("Main_Attribute", on_delete=models.CASCADE)
+    value = models.IntegerField(default=0)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['character', 'attribute'],
+                name='character_attribute_unique',
+            ),
+        ]
 
 # DATA MODELS
 #1. Grabbed from ERDB API (https://api.erdb.wiki/v1/latest/)

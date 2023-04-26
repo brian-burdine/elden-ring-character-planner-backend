@@ -5,11 +5,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import action
 from .models import (
+    Armament,
     CustomUser,
     Character,
     Starting_Class
 )
 from .serializers import (
+    ArmamentSerializer,
     CustomUserSerializer,
     CharacterSerializer,
     StartingClassSerializer
@@ -55,3 +57,8 @@ class CharacterViewSet(viewsets.ModelViewSet):
 class StartingClassViewSet(viewsets.ModelViewSet):
     queryset = Starting_Class.objects.all()
     serializer_class = StartingClassSerializer
+
+#ARMAMENT
+class ArmamentViewSet(viewsets.ModelViewSet):
+    queryset = Armament.objects.all()
+    serializer_class = ArmamentSerializer
