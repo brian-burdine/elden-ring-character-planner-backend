@@ -53,11 +53,10 @@ class CharacterAttributeSerializer(serializers.ModelSerializer):
 
 class CharacterSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=16)
-    leveled_attributes = CharacterAttributeSerializer(many=True)
 
     class Meta:
         model = Character
-        fields = ('id', 'name', 'starting_class', 'leveled_attributes', 'owner')
+        fields = ('id', 'name', 'starting_class', 'owner')
 
 
 class StartingClassAttributeSerializer(serializers.ModelSerializer):
