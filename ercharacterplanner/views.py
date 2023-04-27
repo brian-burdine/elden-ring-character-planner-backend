@@ -5,12 +5,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import action
 from .models import (
+    Armament,
     CustomUser,
-    Character
+    Character,
+    Character_Attribute,
+    Starting_Class
 )
 from .serializers import (
+    ArmamentSerializer,
     CustomUserSerializer,
-    CharacterSerializer
+    CharacterSerializer,
+    CharacterAttributeSerializer,
+    StartingClassSerializer
 )
 
 # Create your views here.
@@ -35,8 +41,8 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = CustomUserSerializer
 
 #CHARACTERS
-#TO-DO: Figure out if I need to filter queryset based on user/owner
 class CharacterViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
 
@@ -48,3 +54,18 @@ class CharacterViewSet(viewsets.ModelViewSet):
     # Attaches the user to the character when the request comes through with the user that made the request
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+class CharacterAttributeViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = Character_Attribute.objects.all()
+    serializer_class = CharacterAttributeSerializer
+
+#STARTING CLASS
+class StartingClassViewSet(viewsets.ModelViewSet):
+    queryset = Starting_Class.objects.all()
+    serializer_class = StartingClassSerializer
+
+#ARMAMENT
+class ArmamentViewSet(viewsets.ModelViewSet):
+    queryset = Armament.objects.all()
+    serializer_class = ArmamentSerializer
