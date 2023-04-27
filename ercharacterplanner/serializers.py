@@ -46,11 +46,10 @@ class MainAttributeSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 class CharacterAttributeSerializer(serializers.ModelSerializer):
-    name = serializers.ReadOnlyField(source='main_attribute.name')
 
     class Meta:
         model = Character_Attribute
-        fields = ('id', 'name', 'value')
+        fields = ('id', 'character', 'attribute', 'value')
 
 class CharacterSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=16)
