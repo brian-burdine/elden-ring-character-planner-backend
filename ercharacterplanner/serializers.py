@@ -53,11 +53,27 @@ class CharacterAttributeSerializer(serializers.ModelSerializer):
         model = Character_Attribute
         fields = ('id', 'character', 'attribute', 'value')
 
+class CharacterAttributeReadSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField(source='main_attribute.id')
+    name = serializers.ReadOnlyField(source='main_attribute.name')
+
+    class Meta:
+        model = Character_Attribute
+        fields = ('id', 'name', 'value')
+
 class CharacterArmamentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Character_Armament
         fields = ('id', 'character', 'armament', 'slot')
+
+class CharacterArmamentReadSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField(source='armament.id')
+    name = serializers.ReadOnlyField(source='armament.name')
+
+    class Meta:
+        model = Character_Armament
+        fields = ('id', 'name', 'slot')
 
 class CharacterWriteSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=16)
@@ -67,8 +83,8 @@ class CharacterWriteSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'starting_class', 'owner')
 
 class CharacterReadOnlySerializer(serializers.ModelSerializer):
-    leveled_attributes = MainAttributeSerializer(many=True)
-    # armaments = ArmamentSerializer(many=True)
+    leveled_attributes = CharacterAttributeReadSerializer(source='character_attribute_set', many=True)
+    armaments = CharacterArmamentReadSerializer(source='character_armament_set',many=True)
 
     class Meta:
         model = Character
