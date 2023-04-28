@@ -49,7 +49,6 @@ class UserDetail(generics.RetrieveAPIView):
 class CharacterViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Character.objects.all()
-    serializer_class = CharacterSerializer
 
     # Overwrites the default queryset by using the user attached to a request to filter the set on the user field in Character model
     def get_queryset(self):

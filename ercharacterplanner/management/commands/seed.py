@@ -1,7 +1,8 @@
 import requests
 from django.core.management.base import BaseCommand
 from ...models import (
-    Armament, 
+    Armament,
+    Armament_Slot, 
     Armor, 
     Ash_Of_War, 
     Great_Rune, 
@@ -41,6 +42,8 @@ class Command(BaseCommand):
     # print("Starting Class Attributes table cleared")
     # seed_starting_class_attributes()
     # print("Starting Class Attributes table seeded")
+    # seed_armament_slots()
+    # print("Armament Slots table seeded")
 
 # API URL to get data from latest game version
 BASE_URL = "https://api.erdb.wiki/v1/latest/"
@@ -296,6 +299,17 @@ def seed_starting_class_attributes():
                 base_value=starting_class_attributes[attribute_set][attribute_name]
             )
             sca.save()
+
+def seed_armament_slots():
+    armament_slots = (
+        "Right Hand 1", "Right Hand 2", "Right Hand 3",
+        "Left Hand 1", "Left Hand 2", "Left Hand 3"
+    )
+    for slot in armament_slots:
+        arma_s = Armament_Slot(
+            name=slot
+        )
+        arma_s.save()
 
 # # API Test
 # great_runes = get_great_runes()
