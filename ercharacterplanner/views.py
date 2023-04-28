@@ -8,16 +8,21 @@ from .models import (
     Armament,
     CustomUser,
     Character,
+    Character_Armament,
     Character_Attribute,
     Starting_Class
 )
 from .serializers import (
     ArmamentSerializer,
     CustomUserSerializer,
-    CharacterSerializer,
+    CharacterArmamentSerializer,
     CharacterAttributeSerializer,
+    CharacterReadOnlySerializer,
+    CharacterWriteSerializer,
     StartingClassSerializer
 )
+
+write_actions = ["create", "update", "partial_update", "destroy"]
 
 # Create your views here.
 
@@ -51,9 +56,18 @@ class CharacterViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Character.objects.filter(owner=user)
 
+    def get_serializer_class(self):
+        if self.action in write_actions:
+            return CharacterWriteSerializer
+        return CharacterReadOnlySerializer
+
     # Attaches the user to the character when the request comes through with the user that made the request
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+class CharacterArmamentViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = Character_Armament.objects.all()
 
 class CharacterAttributeViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
