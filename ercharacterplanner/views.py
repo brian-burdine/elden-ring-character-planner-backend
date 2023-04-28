@@ -67,6 +67,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
 class CharacterArmamentViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Character_Armament.objects.all()
+    serializer_class = CharacterArmamentSerializer
 
 class CharacterAttributeViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

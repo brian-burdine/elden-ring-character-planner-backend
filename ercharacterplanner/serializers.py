@@ -67,6 +67,8 @@ class CharacterWriteSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'starting_class', 'owner')
 
 class CharacterReadOnlySerializer(serializers.ModelSerializer):
+    leveled_attributes = MainAttributeSerializer(many=True)
+    # armaments = ArmamentSerializer(many=True)
 
     class Meta:
         model = Character
@@ -74,7 +76,8 @@ class CharacterReadOnlySerializer(serializers.ModelSerializer):
             'id', 
             'name', 
             'starting_class', 
-            'leveled_attributes', 
+            'leveled_attributes',
+            'armaments', 
             'owner'
         )
 
