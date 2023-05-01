@@ -4,12 +4,29 @@ from rest_framework import status, permissions, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import action
-from .models import CustomUser
+from .models import (
+    Armament,
+    CustomUser,
+    Character,
+    Character_Armament,
+    Character_Attribute,
+    Starting_Class
+)
+from .serializers import (
+    ArmamentSerializer,
+    CustomUserSerializer,
+    CharacterArmamentSerializer,
+    CharacterAttributeSerializer,
+    CharacterReadOnlySerializer,
+    CharacterWriteSerializer,
+    StartingClassSerializer
+)
 
-from .serializers import CustomUserSerializer
+write_actions = ["create", "update", "partial_update", "destroy"]
 
 # Create your views here.
 
+# USERS
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
@@ -27,3 +44,42 @@ class UserDetail(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
+
+#CHARACTERS
+class CharacterViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = Character.objects.all()
+
+    # Overwrites the default queryset by using the user attached to a request to filter the set on the user field in Character model
+    def get_queryset(self):
+        user = self.request.user
+        return Character.objects.filter(owner=user)
+
+    def get_serializer_class(self):
+        if self.action in write_actions:
+            return CharacterWriteSerializer
+        return CharacterReadOnlySerializer
+
+    # Attaches the user to the character when the request comes through with the user that made the request
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+class CharacterArmamentViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = Character_Armament.objects.all()
+    serializer_class = CharacterArmamentSerializer
+
+class CharacterAttributeViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = Character_Attribute.objects.all()
+    serializer_class = CharacterAttributeSerializer
+
+#STARTING CLASS
+class StartingClassViewSet(viewsets.ModelViewSet):
+    queryset = Starting_Class.objects.all()
+    serializer_class = StartingClassSerializer
+
+#ARMAMENT
+class ArmamentViewSet(viewsets.ModelViewSet):
+    queryset = Armament.objects.all()
+    serializer_class = ArmamentSerializer

@@ -4,6 +4,11 @@ from .views import *
 from rest_framework import routers
 
 router = routers.DefaultRouter()
+router.register(r'characters', CharacterViewSet)
+router.register(r'starting_classes', StartingClassViewSet)
+router.register(r'character_weapons', CharacterArmamentViewSet)
+router.register(r'character_attributes', CharacterAttributeViewSet)
+router.register(r'weapons', ArmamentViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
